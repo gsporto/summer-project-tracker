@@ -2,6 +2,7 @@ import { kv } from "@vercel/kv";
 import { unstable_cache as cache } from "next/cache";
 import { UserWeeks } from "./user";
 import { User } from "./types";
+import { CURRENT_WEEK, TOTAL_WEEKS, dayjs } from "./utils/dayjs";
 
 const getCachedUsers = cache(async () => {
   const users = await kv.get<Array<User>>("users");
@@ -22,7 +23,9 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col justify-center items-center">
-      <h1 className="font-bold text-3xl pt-3">6/21</h1>
+      <h1 className="font-bold text-3xl pt-3">
+        {CURRENT_WEEK}/{TOTAL_WEEKS}
+      </h1>
 
       <div className="flex justify-center items-center flex-wrap gap-4">
         {usersSorted.map((user) => (
