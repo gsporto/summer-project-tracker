@@ -14,7 +14,7 @@ const getCachedUsers = cache(async () => {
 export default async function Home() {
   const users = await getCachedUsers();
 
-  const usersSorted = users.toSorted(
+  const usersSorted = [...users].sort(
     (a, b) =>
       b.weeks.filter((v) => v.status === "completed").length -
       a.weeks.filter((v) => v.status === "completed").length
