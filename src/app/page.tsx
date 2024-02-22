@@ -1,16 +1,6 @@
-import { kv } from "@vercel/kv";
-import { unstable_cache as cache } from "next/cache";
+import { getCachedUsers } from "./services/query/users";
 import { UserWeeks } from "./user";
-import { User } from "./types";
-import { CURRENT_WEEK, TOTAL_WEEKS, dayjs } from "./utils/dayjs";
-
-const getCachedUsers = cache(async () => {
-  const users = await kv.get<Array<User>>("users");
-  if (users) {
-    return users;
-  }
-  return [];
-}, ["users"]);
+import { CURRENT_WEEK, TOTAL_WEEKS } from "./utils/dayjs";
 
 export default async function Home() {
   const users = await getCachedUsers();
