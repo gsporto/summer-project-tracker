@@ -16,7 +16,7 @@ export default async function Home() {
 
   return (
     <main className="flex flex-col justify-center items-center">
-      <p>Ultima Atualização: {cacheDate}</p>
+      <p>Próxima Atualização: {cacheDate}</p>
       <h1 className="font-bold text-3xl pt-3">
         {CURRENT_WEEK}/{TOTAL_WEEKS}
       </h1>

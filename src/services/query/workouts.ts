@@ -73,7 +73,7 @@ export async function getWorkouts() {
 
     kv.set(KEY_USER, users);
     revalidateTag(KEY_USER);
-    kv.set(KEY_CACHE, dayjs().add(30, "seconds").toISOString());
+    kv.set(KEY_CACHE, dayjs().add(30, "second").toISOString());
     revalidateTag(KEY_CACHE);
     return;
   }
