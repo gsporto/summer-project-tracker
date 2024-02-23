@@ -19,6 +19,8 @@ export async function getWorkouts() {
   const cacheDate = await cacheControlWorkouts();
   const cached = dayjs().isBefore(dayjs(cacheDate));
 
+  console.log(cacheDate, cached)
+
   if (process.env.WORKOUT_API && process.env.TOKEN_API && !cached) {
     const data: WorkoutsData = await fetch(process.env.WORKOUT_API, {
       cache: "no-store",
