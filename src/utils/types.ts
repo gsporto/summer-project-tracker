@@ -5,6 +5,8 @@ export type Weeks = {
   days: Array<string>;
 };
 
+export type WeekType = "completed" | "in-progress" | "pending" | "uncompleted";
+
 export type User = {
   id: ULID;
   idWorkout: number;
@@ -81,5 +83,5 @@ type Workout = {
 };
 
 export type WorkoutsData = {
-  data: Array<Workout>
-}
+  data: Array<Workout>;
+};

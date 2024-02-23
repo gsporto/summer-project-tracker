@@ -1,29 +1,7 @@
 import { User, Weeks } from "@/utils/types";
-import {
-  CheckCircledIcon,
-  CrossCircledIcon,
-  CircleIcon,
-  Half2Icon,
-} from "@radix-ui/react-icons";
 import { CURRENT_WEEK, TOTAL_WEEKS } from "@/utils/dayjs";
+import { Week } from "./week";
 
-function Icons({ id, days }: Weeks) {
-  if (days.length >= 3) {
-    return (
-      <CheckCircledIcon className="min-h-[80px] min-w-[80px] w-20 h-20 text-lime-500" />
-    );
-  } else {
-    if (id === CURRENT_WEEK && days.length < 3) {
-      return <Half2Icon className="w-20 h-20 text-amber-500 rotate-180" />;
-    }
-    if (id > CURRENT_WEEK) {
-      return <CircleIcon className="w-20 h-20" />;
-    }
-    if (days.length < 3) {
-      return <CrossCircledIcon className="w-20 h-20 text-red-500" />;
-    }
-  }
-}
 
 export async function UserWeeks({ name, weeks }: User) {
   const weeksFilled = [
@@ -54,9 +32,7 @@ export async function UserWeeks({ name, weeks }: User) {
       </div>
       <div className="flex flex-wrap justify-center items-center">
         {weeksFilled.map((week) => (
-          <div key={week.id}>
-            <Icons {...week} />
-          </div>
+          <Week key={week.id} week={week} />
         ))}
       </div>
     </div>
