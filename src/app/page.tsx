@@ -2,6 +2,7 @@ import { getCachedUsers } from "@/services/query/users";
 import { cacheControlWorkouts, getWorkouts } from "@/services/query/workouts";
 import { UserWeeks } from "@/components/user";
 import { CURRENT_WEEK, TOTAL_WEEKS, dayjs } from "@/utils/dayjs";
+import { NextUpdate } from "@/components/nextUpdate";
 
 export default async function Home() {
   const users = await getCachedUsers();
@@ -25,7 +26,7 @@ export default async function Home() {
           <UserWeeks key={user.id} {...user}></UserWeeks>
         ))}
       </div>
-      <p className="fixed bottom-0 left-0 bg-black z-50 p-2 rounded-tr-lg">Próxima Atualização: {dayjs(cacheDate).format('DD/MM/YYYY HH:mm:ss')}</p>
+      {cacheDate && <NextUpdate date={cacheDate} />}
     </main>
   );
 }
