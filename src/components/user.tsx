@@ -1,27 +1,27 @@
-import { User, Weeks } from "./types";
+import { User, Weeks } from "@/utils/types";
 import {
   CheckCircledIcon,
   CrossCircledIcon,
   CircleIcon,
-  QuestionMarkCircledIcon,
+  Half2Icon,
 } from "@radix-ui/react-icons";
-import { CURRENT_WEEK, TOTAL_WEEKS } from "./utils/dayjs";
+import { CURRENT_WEEK, TOTAL_WEEKS } from "@/utils/dayjs";
 
-function Icons({ id, status }: Weeks) {
-  switch (status) {
-    case "completed":
-      return (
-        <CheckCircledIcon className="min-h-[80px] min-w-[80px] w-20 h-20 text-lime-500" />
-      );
-    case "uncompleted":
+function Icons({ id, days }: Weeks) {
+  if (days.length >= 3) {
+    return (
+      <CheckCircledIcon className="min-h-[80px] min-w-[80px] w-20 h-20 text-lime-500" />
+    );
+  } else {
+    if (id === CURRENT_WEEK && days.length < 3) {
+      return <Half2Icon className="w-20 h-20 text-amber-500 rotate-180" />;
+    }
+    if (id > CURRENT_WEEK) {
+      return <CircleIcon className="w-20 h-20" />;
+    }
+    if (days.length < 3) {
       return <CrossCircledIcon className="w-20 h-20 text-red-500" />;
-    case "pending":
-    default:
-      return id <= CURRENT_WEEK ? (
-        <QuestionMarkCircledIcon className="w-20 h-20 text-amber-500" />
-      ) : (
-        <CircleIcon className="w-20 h-20" />
-      );
+    }
   }
 }
 
@@ -32,15 +32,15 @@ export async function UserWeeks({ name, weeks }: User) {
       .fill(undefined)
       .map<Weeks>((_, index) => ({
         id: weeks.length + index + 1,
-        status: "pending",
+        days: [],
       })),
   ];
 
   const lengthCompleted = weeks.filter(
-    (weeks) => weeks.status === "completed"
+    (weeks) => weeks.days.length >= 3
   ).length;
   const lengthUncompleted = weeks.filter(
-    (weeks) => weeks.status === "uncompleted"
+    (weeks) => weeks.days.length < 3 && weeks.id !== CURRENT_WEEK
   ).length;
 
   return (
@@ -54,14 +54,7 @@ export async function UserWeeks({ name, weeks }: User) {
       </div>
       <div className="flex flex-wrap justify-center items-center">
         {weeksFilled.map((week) => (
-          <div
-            key={week.id}
-            title={
-              week.id <= CURRENT_WEEK
-                ? "Week not registered"
-                : week.status.charAt(0).toUpperCase() + week.status.slice(1)
-            }
-          >
+          <div key={week.id}>
             <Icons {...week} />
           </div>
         ))}

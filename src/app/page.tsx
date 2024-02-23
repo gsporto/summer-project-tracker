@@ -1,14 +1,16 @@
-import { getCachedUsers } from "./services/query/users";
-import { UserWeeks } from "./user";
-import { CURRENT_WEEK, TOTAL_WEEKS } from "./utils/dayjs";
+import { getCachedUsers } from "@/services/query/users";
+import { getWorkouts } from "@/services/query/workouts";
+import { UserWeeks } from "@/components/user";
+import { CURRENT_WEEK, TOTAL_WEEKS } from "@/utils/dayjs";
 
 export default async function Home() {
   const users = await getCachedUsers();
+  await getWorkouts();
 
   const usersSorted = [...users].sort(
     (a, b) =>
-      b.weeks.filter((v) => v.status === "completed").length -
-      a.weeks.filter((v) => v.status === "completed").length
+      b.weeks.filter((v) => v.days.length >= 3).length -
+      a.weeks.filter((v) => v.days.length >= 3).length
   );
 
   return (
