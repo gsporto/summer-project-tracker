@@ -12,7 +12,7 @@ export const cacheControlWorkouts = cache(
     return await kv.get<string>(KEY_CACHE);
   },
   [KEY_CACHE],
-  { revalidate: 60 * 60 * 24, tags: [KEY_CACHE] }
+  { revalidate: 60 * 15, tags: [KEY_CACHE] }
 );
 
 export async function getWorkouts() {
@@ -73,7 +73,7 @@ export async function getWorkouts() {
 
     kv.set(KEY_USER, users);
     revalidateTag(KEY_USER);
-    kv.set(KEY_CACHE, dayjs().add(30, "minutes").toISOString());
+    kv.set(KEY_CACHE, dayjs().add(30, "minute").toISOString());
     revalidateTag(KEY_CACHE);
     return;
   }
