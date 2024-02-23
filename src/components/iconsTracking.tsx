@@ -5,6 +5,7 @@ import {
   CrossCircledIcon,
   CircleIcon,
   Half2Icon,
+  DotsHorizontalIcon,
 } from "@radix-ui/react-icons";
 
 type IconsTrackingProps = {
@@ -19,7 +20,12 @@ export function IconsTracking({ className, type }: IconsTrackingProps) {
     case "uncompleted":
       return <CrossCircledIcon className={cn("w-20 h-20", className)} />;
     case "in-progress":
-      return <Half2Icon className={cn("w-20 h-20", className)} />;
+      return (
+        <div className="relative">
+          <CircleIcon className={cn("w-20 h-20", className)} />
+          <DotsHorizontalIcon className={cn("w-10 h-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2", className)} />
+        </div>
+      )
     case "pending":
       return <CircleIcon className={cn("w-20 h-20", className)} />;
 
