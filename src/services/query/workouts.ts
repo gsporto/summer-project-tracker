@@ -7,7 +7,7 @@ import { ulid } from "ulidx";
 
 const KEY_CACHE = "cacheControlWorkouts";
 
-const cacheControlWorkouts = cache(
+export const cacheControlWorkouts = cache(
   async () => {
     return await kv.get<string>(KEY_CACHE);
   },
@@ -18,8 +18,6 @@ const cacheControlWorkouts = cache(
 export async function getWorkouts() {
   const cacheDate = await cacheControlWorkouts();
   const cached = dayjs().isBefore(dayjs(cacheDate));
-
-  console.log(cacheDate, cached)
 
   if (process.env.WORKOUT_API && process.env.TOKEN_API && !cached) {
     const data: WorkoutsData = await fetch(process.env.WORKOUT_API, {
@@ -75,7 +73,7 @@ export async function getWorkouts() {
 
     kv.set(KEY_USER, users);
     revalidateTag(KEY_USER);
-    kv.set(KEY_CACHE, dayjs().add(30, "minutes").toISOString());
+    kv.set(KEY_CACHE, dayjs().add(30, "seconds").toISOString());
     revalidateTag(KEY_CACHE);
     return;
   }
