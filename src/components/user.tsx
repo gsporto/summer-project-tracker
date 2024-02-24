@@ -1,8 +1,8 @@
-import { User, Weeks } from '@/utils/types';
+import type { User, Weeks } from '@/utils/types';
 import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from '@/utils/dayjs';
 import { Week } from './week';
 
-export async function UserWeeks({ name, weeks }: User) {
+export function UserWeeks({ name, weeks }: User) {
   const weeksFilled = [
     ...weeks,
     ...Array(TOTAL_WEEKS - weeks.length)

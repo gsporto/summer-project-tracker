@@ -1,4 +1,4 @@
-import { WorkoutsData } from '@/utils/types';
+import { type WorkoutsData } from '@/utils/types';
 import { kv } from '@vercel/kv';
 import { START_DATE, dayjs } from '@/utils/dayjs';
 import { unstable_cache as cache, revalidateTag } from 'next/cache';
@@ -25,7 +25,7 @@ export async function getWorkouts() {
       headers: {
         Authorization: process.env.TOKEN_API,
       },
-    }).then((r) => r.json());
+    }).then((r) => r.json() as Promise<WorkoutsData>);
 
     const users = await getCachedUsers();
 
@@ -71,9 +71,9 @@ export async function getWorkouts() {
       );
     }
 
-    kv.set(KEY_USER, users);
+    void kv.set(KEY_USER, users);
     revalidateTag(KEY_USER);
-    kv.set(KEY_CACHE, dayjs().add(30, 'minute').toISOString());
+    void kv.set(KEY_CACHE, dayjs().add(30, 'minute').toISOString());
     revalidateTag(KEY_CACHE);
     return;
   }

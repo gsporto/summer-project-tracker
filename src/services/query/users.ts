@@ -1,6 +1,6 @@
 import { kv } from '@vercel/kv';
 import { unstable_cache as cache } from 'next/cache';
-import { User } from '@/utils/types';
+import { type User } from '@/utils/types';
 
 export const KEY_USER = '@user';
 

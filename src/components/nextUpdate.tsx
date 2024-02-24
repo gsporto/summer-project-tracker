@@ -9,7 +9,9 @@ type NextUpdateProps = {
 
 export function NextUpdate({ date }: NextUpdateProps) {
   const dateParsed = useSyncExternalStore(
-    () => () => {},
+    () => () => {
+      return;
+    },
     () => dayjs(date).format('DD/MM/YYYY HH:mm:ss'),
     () => dayjs(date).format('DD/MM/YYYY HH:mm:ss'),
   );

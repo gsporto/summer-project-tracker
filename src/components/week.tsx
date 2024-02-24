@@ -4,7 +4,7 @@ import {
   START_DATE,
   dayjs,
 } from '@/utils/dayjs';
-import { WeekType, Weeks } from '@/utils/types';
+import type { WeekType, Weeks } from '@/utils/types';
 import { IconsTracking } from './iconsTracking';
 import { TrackingCheck } from './trackingCheck';
 

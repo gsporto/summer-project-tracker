@@ -36,14 +36,11 @@ type Activity = {
   name: string;
   how_much_amount_needed: number;
   how_much_metric_type: string;
-  how_often_points: any;
   icon_url: string;
   scoring_method: string;
   challenge_id: number;
-  how_much_metric_name: any;
   formatted_details: {
     how_much_amount_needed: string;
-    how_often_points: any;
   };
 };
 
@@ -52,8 +49,6 @@ type FormattedDetails = {
   points: string;
   steps: string;
   distance: string;
-  activity_metric_amount: any;
-  calories: any;
 };
 
 type Workout = {
@@ -61,22 +56,15 @@ type Workout = {
   description: null;
   title: string;
   duration: number;
-  media: Media[];
+  media: Array<Media>;
   points: number;
   account: Account;
   steps: number;
   distance: string;
   challenge_id: number;
   photo_url: string;
-  activity_metric_amount: any;
   created_at: string;
   occurred_at: string;
-  apple_workout_uuid: any;
-  activity_type: any;
-  apple_device_name: any;
-  apple_source_name: any;
-  calories: any;
-  google_place_id: any;
   activity: Activity;
   formatted_details: FormattedDetails;
   hustle_points: number;

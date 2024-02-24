@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { WeekType } from '@/utils/types';
+import { type WeekType } from '@/utils/types';
 import {
   CheckCircledIcon,
   CrossCircledIcon,
