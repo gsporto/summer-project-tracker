@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import dayjs from "dayjs";
-import { useSyncExternalStore } from "react";
+import dayjs from 'dayjs';
+import { useSyncExternalStore } from 'react';
 
 type NextUpdateProps = {
   date: string;
@@ -10,8 +10,8 @@ type NextUpdateProps = {
 export function NextUpdate({ date }: NextUpdateProps) {
   const dateParsed = useSyncExternalStore(
     () => () => {},
-    () => dayjs(date).format("DD/MM/YYYY HH:mm:ss"),
-    () => dayjs(date).format("DD/MM/YYYY HH:mm:ss")
+    () => dayjs(date).format('DD/MM/YYYY HH:mm:ss'),
+    () => dayjs(date).format('DD/MM/YYYY HH:mm:ss'),
   );
 
   return (

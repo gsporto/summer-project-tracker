@@ -1,9 +1,9 @@
-"use client";
-import { cn } from "@/utils/cn";
-import { MIN_DAY_PER_WEEK } from "@/utils/dayjs";
-import { Weeks } from "@/utils/types";
-import { CircleIcon } from "@radix-ui/react-icons";
-import React, { useState } from "react";
+'use client';
+import { cn } from '@/utils/cn';
+import { MIN_DAY_PER_WEEK } from '@/utils/dayjs';
+import { Weeks } from '@/utils/types';
+import { CircleIcon } from '@radix-ui/react-icons';
+import React, { useState } from 'react';
 
 type TrackingCheckProps = {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ export function TrackingCheck({ children, color, week }: TrackingCheckProps) {
   return (
     <div onClick={() => setShowData((state) => !state)}>
       {showData ? (
-        <div className={cn("w-20 h-20 relative select-none", color)}>
+        <div className={cn('w-20 h-20 relative select-none', color)}>
           <CircleIcon className="w-20 h-20" />
           <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             {week.days.length}/{MIN_DAY_PER_WEEK}

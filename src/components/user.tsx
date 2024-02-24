@@ -1,7 +1,6 @@
-import { User, Weeks } from "@/utils/types";
-import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from "@/utils/dayjs";
-import { Week } from "./week";
-
+import { User, Weeks } from '@/utils/types';
+import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from '@/utils/dayjs';
+import { Week } from './week';
 
 export async function UserWeeks({ name, weeks }: User) {
   const weeksFilled = [
@@ -15,10 +14,11 @@ export async function UserWeeks({ name, weeks }: User) {
   ];
 
   const lengthCompleted = weeks.filter(
-    (weeks) => weeks.days.length >= MIN_DAY_PER_WEEK
+    (weeks) => weeks.days.length >= MIN_DAY_PER_WEEK,
   ).length;
   const lengthUncompleted = weeks.filter(
-    (weeks) => weeks.days.length < MIN_DAY_PER_WEEK && weeks.id !== CURRENT_WEEK
+    (weeks) =>
+      weeks.days.length < MIN_DAY_PER_WEEK && weeks.id !== CURRENT_WEEK,
   ).length;
 
   return (

@@ -1,11 +1,11 @@
-import type { ULID } from "ulidx";
+import type { ULID } from 'ulidx';
 
 export type Weeks = {
   id: number;
   days: Array<string>;
 };
 
-export type WeekType = "completed" | "in-progress" | "pending" | "uncompleted";
+export type WeekType = 'completed' | 'in-progress' | 'pending' | 'uncompleted';
 
 export type User = {
   id: ULID;

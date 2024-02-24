@@ -1,8 +1,8 @@
-import { getCachedUsers } from "@/services/query/users";
-import { cacheControlWorkouts, getWorkouts } from "@/services/query/workouts";
-import { UserWeeks } from "@/components/user";
-import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from "@/utils/dayjs";
-import { NextUpdate } from "@/components/nextUpdate";
+import { getCachedUsers } from '@/services/query/users';
+import { cacheControlWorkouts, getWorkouts } from '@/services/query/workouts';
+import { UserWeeks } from '@/components/user';
+import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from '@/utils/dayjs';
+import { NextUpdate } from '@/components/nextUpdate';
 
 export default async function Home() {
   await getWorkouts();
@@ -12,7 +12,7 @@ export default async function Home() {
   const usersSorted = [...users].sort(
     (a, b) =>
       b.weeks.filter((v) => v.days.length >= MIN_DAY_PER_WEEK).length -
-      a.weeks.filter((v) => v.days.length >= MIN_DAY_PER_WEEK).length
+      a.weeks.filter((v) => v.days.length >= MIN_DAY_PER_WEEK).length,
   );
 
   return (
