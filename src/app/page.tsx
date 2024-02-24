@@ -5,9 +5,9 @@ import { CURRENT_WEEK, TOTAL_WEEKS, dayjs } from "@/utils/dayjs";
 import { NextUpdate } from "@/components/nextUpdate";
 
 export default async function Home() {
-  const users = await getCachedUsers();
   await getWorkouts();
   const cacheDate = await cacheControlWorkouts();
+  const users = await getCachedUsers();
 
   const usersSorted = [...users].sort(
     (a, b) =>
