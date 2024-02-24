@@ -1,4 +1,4 @@
-import { CURRENT_WEEK } from "@/utils/dayjs";
+import { CURRENT_WEEK, MIN_DAY_PER_WEEK, START_DATE, dayjs } from "@/utils/dayjs";
 import { WeekType, Weeks } from "@/utils/types";
 import { IconsTracking } from "./iconsTracking";
 import { TrackingCheck } from "./trackingCheck";
@@ -7,17 +7,22 @@ type WeekProps = {
   week: Weeks;
 };
 
+
 function getType({ days, id }: Weeks): WeekType {
-  if (days.length >= 3) {
+  if (days.length >= MIN_DAY_PER_WEEK) {
     return "completed";
   } else {
-    if (id === CURRENT_WEEK && days.length < 3) {
+    const daysLeaft = START_DATE.add(CURRENT_WEEK, 'week').diff(dayjs().startOf('day'), 'day');
+    if (id === CURRENT_WEEK && days.length + daysLeaft < MIN_DAY_PER_WEEK) {
+      return "uncompleted";
+    }
+    if (id === CURRENT_WEEK && days.length < MIN_DAY_PER_WEEK) {
       return "in-progress";
     }
     if (id > CURRENT_WEEK) {
       return "pending";
     }
-    if (days.length < 3) {
+    if (days.length < MIN_DAY_PER_WEEK) {
       return "uncompleted";
     }
     return "uncompleted";
