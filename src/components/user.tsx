@@ -1,5 +1,9 @@
 import type { User, Weeks } from '@/utils/types';
-import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from '@/utils/dayjs';
+import {
+  MIN_DAY_PER_WEEK,
+  TOTAL_WEEKS,
+  getCurrentWeek,
+} from '@/utils/dateTime';
 import { Week } from './week';
 
 export function UserWeeks({ name, weeks }: User) {
@@ -18,7 +22,8 @@ export function UserWeeks({ name, weeks }: User) {
   ).length;
   const lengthUncompleted = weeks.filter(
     (weeks) =>
-      weeks.days.length < MIN_DAY_PER_WEEK && weeks.id !== CURRENT_WEEK,
+      weeks.days.length < MIN_DAY_PER_WEEK &&
+      weeks.id !== getCurrentWeek('America/Sao_Paulo'),
   ).length;
 
   return (

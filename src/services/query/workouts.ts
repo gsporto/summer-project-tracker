@@ -1,9 +1,10 @@
-import { type WorkoutsData } from '@/utils/types';
+import { type User, type WorkoutsData } from '@/utils/types';
 import { kv } from '@vercel/kv';
-import { START_DATE, dayjs } from '@/utils/dayjs';
+import { getStartDate } from '@/utils/dateTime';
 import { unstable_cache as cache, revalidateTag } from 'next/cache';
-import { KEY_USER, getCachedUsers } from './users';
+import { KEY_USER } from './users';
 import { ulid } from 'ulidx';
+import { DateTime } from 'luxon';
 
 const KEY_CACHE = 'cacheControlWorkouts';
 
@@ -17,7 +18,12 @@ export const cacheControlWorkouts = cache(
 
 export async function getWorkouts() {
   const cacheDate = await cacheControlWorkouts();
-  const cached = dayjs().isBefore(dayjs(cacheDate));
+  let cached = false;
+  if (cacheDate) {
+    cached = DateTime.now() < DateTime.fromISO(cacheDate);
+  } else {
+    cached = false;
+  }
 
   if (process.env.WORKOUT_API && process.env.TOKEN_API && !cached) {
     const data: WorkoutsData = await fetch(process.env.WORKOUT_API, {
@@ -27,14 +33,19 @@ export async function getWorkouts() {
       },
     }).then((r) => r.json() as Promise<WorkoutsData>);
 
-    const users = await getCachedUsers();
+    const users = [] as Array<User>;
 
     for (const value of data.data.reverse()) {
       const userFinded = users.find(
         (user) => user.idWorkout === value.account.id,
       );
 
-      const currentWeek = dayjs(value.occurred_at).diff(START_DATE, 'week') + 1;
+      const currentWeek =
+        Math.floor(
+          DateTime.fromISO(value.occurred_at, {
+            zone: 'America/Sao_Paulo',
+          }).diff(getStartDate('America/Sao_Paulo'), 'week').weeks,
+        ) + 1;
 
       if (!userFinded) {
         users.push({
@@ -44,7 +55,11 @@ export async function getWorkouts() {
           weeks: [
             {
               id: currentWeek,
-              days: [dayjs(value.occurred_at).format('DD/MM/YYYY')],
+              days: [
+                DateTime.fromISO(value.occurred_at, {
+                  zone: 'America/Sao_Paulo',
+                }).toISODate()!,
+              ],
             },
           ],
         });
@@ -58,13 +73,19 @@ export async function getWorkouts() {
       if (!weekFinded) {
         userFinded.weeks.push({
           id: currentWeek,
-          days: [dayjs(value.occurred_at).format('DD/MM/YYYY')],
+          days: [
+            DateTime.fromISO(value.occurred_at, {
+              zone: 'America/Sao_Paulo',
+            }).toISODate()!,
+          ],
         });
         continue;
       }
       weekFinded.days = [
         ...weekFinded.days,
-        dayjs(value.occurred_at).format('DD/MM/YYYY'),
+        DateTime.fromISO(value.occurred_at, {
+          zone: 'America/Sao_Paulo',
+        }).toISODate()!,
       ];
       weekFinded.days = weekFinded.days.filter(
         (value, index) => weekFinded.days.indexOf(value) === index,
@@ -73,7 +94,7 @@ export async function getWorkouts() {
 
     void kv.set(KEY_USER, users);
     revalidateTag(KEY_USER);
-    void kv.set(KEY_CACHE, dayjs().add(30, 'minute').toISOString());
+    void kv.set(KEY_CACHE, DateTime.now().plus({ minutes: 30 }).toISO());
     revalidateTag(KEY_CACHE);
     return;
   }

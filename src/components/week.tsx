@@ -1,12 +1,12 @@
 import {
-  CURRENT_WEEK,
   MIN_DAY_PER_WEEK,
-  START_DATE,
-  dayjs,
-} from '@/utils/dayjs';
+  getCurrentWeek,
+  getStartDate,
+} from '@/utils/dateTime';
 import type { WeekType, Weeks } from '@/utils/types';
 import { IconsTracking } from './iconsTracking';
 import { TrackingCheck } from './trackingCheck';
+import { DateTime } from 'luxon';
 
 type WeekProps = {
   week: Weeks;
@@ -16,9 +16,13 @@ function getType({ days, id }: Weeks): WeekType {
   if (days.length >= MIN_DAY_PER_WEEK) {
     return 'completed';
   } else {
-    const daysLeaft = START_DATE.add(CURRENT_WEEK, 'week').diff(
-      dayjs().startOf('day'),
-      'day',
+    const CURRENT_WEEK = getCurrentWeek('America/Sao_Paulo');
+    const START_DATE = getStartDate('America/Sao_Paulo');
+    const daysLeaft = Math.floor(
+      START_DATE.plus({ week: CURRENT_WEEK }).diff(
+        DateTime.now().startOf('day'),
+        'day',
+      ).days,
     );
     if (id === CURRENT_WEEK && days.length + daysLeaft < MIN_DAY_PER_WEEK) {
       return 'uncompleted';

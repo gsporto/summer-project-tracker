@@ -1,6 +1,6 @@
 'use client';
 import { cn } from '@/utils/cn';
-import { MIN_DAY_PER_WEEK } from '@/utils/dayjs';
+import { MIN_DAY_PER_WEEK } from '@/utils/dateTime';
 import { type Weeks } from '@/utils/types';
 import { CircleIcon } from '@radix-ui/react-icons';
 import React, { useState } from 'react';

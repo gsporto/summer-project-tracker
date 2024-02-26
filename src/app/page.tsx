@@ -1,7 +1,7 @@
 import { getCachedUsers } from '@/services/query/users';
 import { cacheControlWorkouts, getWorkouts } from '@/services/query/workouts';
 import { UserWeeks } from '@/components/user';
-import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from '@/utils/dayjs';
+import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from '@/utils/dateTime';
 import { NextUpdate } from '@/components/nextUpdate';
 
 export default async function Home() {

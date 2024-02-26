@@ -1,6 +1,6 @@
 'use client';
 
-import dayjs from 'dayjs';
+import { DateTime } from 'luxon';
 import { useSyncExternalStore } from 'react';
 
 type NextUpdateProps = {
@@ -12,8 +12,11 @@ export function NextUpdate({ date }: NextUpdateProps) {
     () => () => {
       return;
     },
-    () => dayjs(date).format('DD/MM/YYYY HH:mm:ss'),
-    () => dayjs(date).format('DD/MM/YYYY HH:mm:ss'),
+    () => DateTime.fromISO(date).toFormat('dd/MM/yyyy HH:mm:ss'),
+    () =>
+      DateTime.fromISO(date, { zone: 'America/Sao_Paulo' }).toFormat(
+        'dd/MM/yyyy HH:mm:ss',
+      ),
   );
 
   return (
