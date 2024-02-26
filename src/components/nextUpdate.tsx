@@ -12,11 +12,11 @@ export function NextUpdate({ date }: NextUpdateProps) {
     () => () => {
       return;
     },
-    () => DateTime.fromISO(date).toFormat('dd/MM/yyyy HH:mm:ss'),
     () =>
-      DateTime.fromISO(date, { zone: 'America/Sao_Paulo' }).toFormat(
+      DateTime.fromISO(date, { zone: 'system' }).toFormat(
         'dd/MM/yyyy HH:mm:ss',
       ),
+    () => DateTime.fromISO(date).toFormat('dd/MM/yyyy HH:mm:ss'),
   );
 
   return (
