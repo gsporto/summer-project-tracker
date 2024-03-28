@@ -1,5 +1,5 @@
 import { type User, type WorkoutsData } from '@/utils/types';
-import { getStartDate } from '@/utils/dateTime';
+import { getCurrentWeek, getStartDate } from '@/utils/dateTime';
 import { ulid } from 'ulidx';
 import { DateTime } from 'luxon';
 import { unstable_cache } from 'next/cache';
@@ -72,6 +72,16 @@ export async function getWorkouts() {
       weekFinded.days = weekFinded.days.filter(
         (value, index) => weekFinded.days.indexOf(value) === index,
       );
+    }
+
+    const maxWeek = getCurrentWeek('America/Sao_Paulo');
+    for (const user of users) {
+      for (let index = 1; index < maxWeek; index++) {
+        const weekExist = user.weeks.find((week) => week.id === index);
+        if (!weekExist) {
+          user.weeks.splice(index - 1, 0, { id: index, days: [] });
+        }
+      }
     }
 
     return users;
