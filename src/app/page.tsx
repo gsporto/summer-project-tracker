@@ -1,13 +1,15 @@
-import { getCachedUsers } from '@/services/query/users';
-import { cacheControlWorkouts, getWorkouts } from '@/services/query/workouts';
+import { dateCached, getWorkouts } from '@/services/query/workouts';
 import { UserWeeks } from '@/components/user';
-import { CURRENT_WEEK, MIN_DAY_PER_WEEK, TOTAL_WEEKS } from '@/utils/dateTime';
 import { NextUpdate } from '@/components/nextUpdate';
+import {
+  MIN_DAY_PER_WEEK,
+  TOTAL_WEEKS,
+  getCurrentWeek,
+} from '@/utils/dateTime';
 
 export default async function Home() {
-  await getWorkouts();
-  const cacheDate = await cacheControlWorkouts();
-  const users = await getCachedUsers();
+  const date = await dateCached();
+  const users = await getWorkouts();
 
   const usersSorted = [...users].sort(
     (a, b) =>
@@ -18,7 +20,7 @@ export default async function Home() {
   return (
     <main className="flex flex-col justify-center items-center">
       <h1 className="font-bold text-3xl pt-3">
-        {CURRENT_WEEK}/{TOTAL_WEEKS}
+        {getCurrentWeek('America/Sao_Paulo')}/{TOTAL_WEEKS}
       </h1>
 
       <div className="flex justify-center items-center flex-wrap gap-4">
@@ -26,7 +28,7 @@ export default async function Home() {
           <UserWeeks key={user.id} {...user}></UserWeeks>
         ))}
       </div>
-      {cacheDate && <NextUpdate date={cacheDate} />}
+      <NextUpdate date={date} />
     </main>
   );
 }

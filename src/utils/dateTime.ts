@@ -3,7 +3,6 @@ import { DateTime, Settings } from 'luxon';
 Settings.defaultZone = 'UTC';
 
 const MIN_DAY_PER_WEEK = 3;
-const CURRENT_WEEK = 2;
 
 const TOTAL_WEEKS =
   Math.floor(getEndDate('UTC').diff(getStartDate('UTC'), 'week').weeks) + 1;
@@ -24,7 +23,6 @@ function getCurrentWeek(timezone: string) {
 
 export {
   MIN_DAY_PER_WEEK,
-  CURRENT_WEEK,
   TOTAL_WEEKS,
   getStartDate,
   getEndDate,

@@ -1,33 +1,15 @@
 import { type User, type WorkoutsData } from '@/utils/types';
-import { kv } from '@vercel/kv';
 import { getStartDate } from '@/utils/dateTime';
-import { unstable_cache as cache, revalidateTag } from 'next/cache';
-import { KEY_USER } from './users';
 import { ulid } from 'ulidx';
 import { DateTime } from 'luxon';
-
-const KEY_CACHE = 'cacheControlWorkouts';
-
-export const cacheControlWorkouts = cache(
-  async () => {
-    return await kv.get<string>(KEY_CACHE);
-  },
-  [KEY_CACHE],
-  { revalidate: 60 * 15, tags: [KEY_CACHE] },
-);
+import { unstable_cache } from 'next/cache';
 
 export async function getWorkouts() {
-  const cacheDate = await cacheControlWorkouts();
-  let cached = false;
-  if (cacheDate) {
-    cached = DateTime.now() < DateTime.fromISO(cacheDate);
-  } else {
-    cached = false;
-  }
-
-  if (process.env.WORKOUT_API && process.env.TOKEN_API && !cached) {
+  if (process.env.WORKOUT_API && process.env.TOKEN_API) {
     const data: WorkoutsData = await fetch(process.env.WORKOUT_API, {
-      cache: 'no-store',
+      next: {
+        revalidate: 60 * 30,
+      },
       headers: {
         Authorization: process.env.TOKEN_API,
       },
@@ -92,11 +74,20 @@ export async function getWorkouts() {
       );
     }
 
-    void kv.set(KEY_USER, users);
-    revalidateTag(KEY_USER);
-    void kv.set(KEY_CACHE, DateTime.now().plus({ minutes: 30 }).toISO());
-    revalidateTag(KEY_CACHE);
-    return;
+    return users;
   }
-  return;
+  return [];
 }
+
+export const dateCached = unstable_cache(
+  async () => {
+    const promise = await new Promise<string>((resolve) => {
+      resolve(DateTime.now().plus({ minutes: 30 }).toISO());
+    });
+    return promise;
+  },
+  ['date'],
+  {
+    revalidate: 60 * 30,
+  },
+);
